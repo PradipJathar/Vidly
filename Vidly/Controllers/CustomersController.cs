@@ -33,7 +33,8 @@ namespace Vidly.Controllers
         // GET: Customers/Details
         public ActionResult Details(int? id)
         {
-            var customer = db.Customers.SingleOrDefault(c => c.Id == id);
+            var customer = db.Customers.Include(x => x.MembershipType).SingleOrDefault(c => c.Id == id);
+            //var customer = db.Customers.SingleOrDefault(c => c.Id == id);
 
             if (customer == null)
             {
