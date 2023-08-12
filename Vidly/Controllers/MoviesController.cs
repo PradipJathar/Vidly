@@ -1,4 +1,6 @@
-﻿using System;
+﻿using IdentitySample.Models;
+using System.Data.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,21 +12,36 @@ namespace Vidly.Controllers
 {
     public class MoviesController : Controller
     {
+        private ApplicationDbContext db;
+        public MoviesController()
+        {
+            db = new ApplicationDbContext();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            db.Dispose();
+        }
+
         // GET: Movies
         public ActionResult Index()
         {
-            var movies = GetMovies();
+           var movies = db.Movies.Include(m => m.Genre).ToList();
 
             return View(movies);
         }
 
-        public IEnumerable<Movie> GetMovies()
+        // GET: Movies/Details
+        public ActionResult Details(int? id)
         {
-            return new List<Movie>
+            var movie = db.Movies.Include(x => x.Genre).SingleOrDefault(c => c.Id == id);
+
+            if (movie == null)
             {
-                new Movie {Id =1, Name = "ABCD2"},
-                new Movie {Id =2, Name = "Ra1"}
-            };
+                return HttpNotFound();
+            }
+
+            return View(movie);
         }
 
         // GET: Movies/Random
@@ -46,35 +63,5 @@ namespace Vidly.Controllers
 
             return View(viewModel);
         }
-
-
-
-        //[Route("movies/released/{year:regex(\\d{4}):range(1999, 2023)}/{month:regex(\\d{2}):range(1, 12)}")]
-        //public ActionResult ByReleaseDate(int year, int month)
-        //{
-        //    return Content($"Year = {year} and Month = {month}");
-        //}
-
-        //// GET: Movies/Edit
-        //public ActionResult Edit(int id)
-        //{
-        //    return Content("id = " + id);
-        //}
-
-        //// GET: Movies
-        //public ActionResult Index(int? pageIndex, string sortBy)
-        //{
-        //    if (!pageIndex.HasValue)
-        //    {
-        //        pageIndex = 1;
-        //    }
-
-        //    if (String.IsNullOrWhiteSpace(sortBy))
-        //    {
-        //        sortBy = "Name";
-        //    }
-
-        //    return Content($"PageIndex = {pageIndex}, SortBy = {sortBy}");
-        //}
     }
 }
