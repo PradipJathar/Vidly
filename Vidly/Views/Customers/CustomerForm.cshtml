@@ -8,14 +8,12 @@
 
 @using (Html.BeginForm("Save", "Customers"))
 {
+    @Html.ValidationSummary(true, "Please fix the following errors.")
+
     <div class="form-group">
         @Html.LabelFor(x => x.Customer.Name)
         @Html.TextBoxFor(x => x.Customer.Name, new { @class = "form-control" })
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(x => x.Customer.Birthdate)
-        @Html.TextBoxFor(x => x.Customer.Birthdate, "{0:d MMM yyyy}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Customer.Name)
     </div>
 
     <div class="form-group">
@@ -24,6 +22,13 @@
                                 new SelectList(Model.MembershipTypes, "Id", "Name"),
                                 "Select Membership Type",
                                 new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Customer.MembershipTypeId)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(x => x.Customer.Birthdate)
+        @Html.TextBoxFor(x => x.Customer.Birthdate, "{0:d MMM yyyy}", new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Customer.Birthdate)
     </div>
 
     <div class="checkbox">
@@ -33,7 +38,12 @@
     </div>
 
     @Html.HiddenFor(x => x.Customer.Id)
+    @Html.AntiForgeryToken()
 
     <button type="submit" class="btn btn-primary">Save</button>
 }
 
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
