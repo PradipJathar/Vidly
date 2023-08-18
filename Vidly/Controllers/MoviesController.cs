@@ -23,7 +23,7 @@ namespace Vidly.Controllers
             db.Dispose();
         }
 
-        // GET: Movies
+
         public ActionResult Index()
         {
            var movies = db.Movies.Include(m => m.Genre).ToList();
@@ -31,7 +31,60 @@ namespace Vidly.Controllers
             return View(movies);
         }
 
-        // GET: Movies/Details
+        
+        public ActionResult New()
+        {
+            var genres = db.Genres.ToList();
+
+            var viewModel = new MovieFormViewModel
+            {
+                Genres = genres
+            };
+
+            return View("MovieForm", viewModel);
+        }
+
+        public ActionResult Edit(int id)
+        {
+            var movie = db.Movies.SingleOrDefault(m => m.Id == id);
+
+            if (movie == null)
+            {
+                return HttpNotFound();
+            }
+
+            var viewModel = new MovieFormViewModel
+            {
+                Movie = movie,
+                Genres = db.Genres.ToList()
+            };
+
+            return View("MovieForm", viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Save(Movie movie)
+        {
+            if (movie.Id == 0)
+            {
+                movie.DateAdded = DateTime.Now;
+                db.Movies.Add(movie);
+            }
+            else
+            {
+                var movieInDb = db.Movies.Single(m => m.Id == movie.Id);
+                movieInDb.Name = movie.Name;
+                movieInDb.ReleaseDate = movie.ReleaseDate;
+                movieInDb.GenreId = movie.GenreId;
+                movieInDb.NumberInStock = movie.NumberInStock;
+            }
+
+            db.SaveChanges();
+
+            return RedirectToAction("Index", "Movies");
+        }
+
+
         public ActionResult Details(int? id)
         {
             var movie = db.Movies.Include(x => x.Genre).SingleOrDefault(c => c.Id == id);
@@ -44,7 +97,7 @@ namespace Vidly.Controllers
             return View(movie);
         }
 
-        // GET: Movies/Random
+
         public ActionResult Random()
         {
             var movie = new Movie() { Name = "ABCD2" };
