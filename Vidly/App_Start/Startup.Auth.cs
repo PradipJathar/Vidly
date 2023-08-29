@@ -5,6 +5,7 @@ using Microsoft.Owin.Security.Cookies;
 using IdentitySample.Models;
 using Owin;
 using System;
+using Vidly.Models;
 
 namespace IdentitySample
 {
@@ -58,9 +59,9 @@ namespace IdentitySample
             //   appId: "",
             //   appSecret: "");
 
-            //app.UseGoogleAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
+            app.UseGoogleAuthentication(
+                clientId: "399845379907-kn5rgc1pap38k37ht8uekgco90i6jasu.apps.googleusercontent.com",
+                clientSecret: "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");
         }
     }
 }
