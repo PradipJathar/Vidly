@@ -17,7 +17,7 @@ textarea {
 }
 
 /* styles for validation helpers */
-.field-validation-error {
+.field-validation-error, label.error {
     color: red;
 }
 
@@ -25,7 +25,7 @@ textarea {
     display: none;
 }
 
-.input-validation-error {
+.input-validation-error, input.error {
     border: 2px solid red;
 }
 
