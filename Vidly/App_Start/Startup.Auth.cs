@@ -6,6 +6,7 @@ using IdentitySample.Models;
 using Owin;
 using System;
 using Vidly.Models;
+using System.Configuration;
 
 namespace IdentitySample
 {
@@ -59,9 +60,15 @@ namespace IdentitySample
             //   appId: "",
             //   appSecret: "");
 
+            //app.UseGoogleAuthentication(
+            //    clientId: "399845379907-kn5rgc1pap38k37ht8uekgco90i6jasu.apps.googleusercontent.com",
+            //    clientSecret: "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");
+
             app.UseGoogleAuthentication(
-                clientId: "399845379907-kn5rgc1pap38k37ht8uekgco90i6jasu.apps.googleusercontent.com",
-                clientSecret: "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");
+                clientId: ConfigurationManager.AppSettings["GoogleClientId"],
+                clientSecret: ConfigurationManager.AppSettings["GoogleClientSecret"]);
+
+
         }
     }
 }

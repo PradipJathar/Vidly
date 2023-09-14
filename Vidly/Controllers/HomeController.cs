@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 
 namespace IdentitySample.Controllers
 {
@@ -13,6 +14,8 @@ namespace IdentitySample.Controllers
         [Authorize]
         public ActionResult About()
         {
+            throw new Exception();
+
             ViewBag.Message = "Your app description page.";
 
             return View();
